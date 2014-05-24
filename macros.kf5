@@ -1,0 +1,54 @@
+%_kf5_prefix %_prefix
+%_kf5_archdatadir %_libdir/qt5
+%_kf5_bindir %_kf5_prefix/bin
+%_kf5_datadir %_datadir
+%_kf5_docdir /usr/share/doc
+%_kf5_includedir %_includedir/KF5
+%_kf5_libdir %_libdir
+%_kf5_libexecdir %_libexecdir/kf5
+%_kf5_qtplugindir %_qt5_plugindir
+%_kf5_plugindir %_qt5_plugindir/kf5
+%_kf5_sysconfdir %_sysconfdir
+%_kf5_mandir %_kf5_datadir/man
+%_kf5_buildtype release
+%_kf5_qmldir %_kf5_archdatadir/qml
+
+%cmake_kf5 \
+  QTDIR="%{_qt5_prefix}" ; export QTDIR ; \
+  PATH="%{_kf5_bindir}:$PATH" ; export PATH ; \
+  CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
+  CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
+  FFLAGS="${FFLAGS:-%optflags%{?_fmoddir: -I%_fmoddir}}" ; export FFLAGS ; \
+  %{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;} \
+  %{__cmake} \\\
+    -DBUILD_SHARED_LIBS:BOOL=ON \\\
+    -DBUILD_TESTING:BOOL=FALSE \\\
+    -DCMAKE_BUILD_TYPE=%{_kf5_buildtype} \\\
+    -DCMAKE_INSTALL_PREFIX:PATH=%{_kf5_prefix} \\\
+    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \\\
+    -DBIN_INSTALL_DIR:PATH=%{_kf5_bindir} \\\
+    -DINCLUDE_INSTALL_DIR:PATH=%{_includedir} \\\
+    -DLIB_INSTALL_DIR:PATH=%{_lib} \\\
+%if "%{?_lib}" == "lib64" \
+     %{?_cmake_lib_suffix64} \\\
+%endif \
+    -DKCFG_INSTALL_DIR:PATH=%{_datadir}/config.kcfg \\\
+    -DPLUGIN_INSTALL_DIR:PATH=%{_kf5_plugindir} \\\
+    -DQT_PLUGIN_INSTALL_DIR:PATH=%{_qt5_plugindir} \\\
+    -DQML_INSTALL_DIR:PATH=%{_kf5_qmldir} \\\
+    -DIMPORTS_INSTALL_DIR:PATH=%{_qt5_importdir} \\\
+    -DECM_MKSPECS_INSTALL_DIR:PATH=%{_kf5_datadir}/qt5/mkspecs/modules \\\
+    -DSYSCONF_INSTALL_DIR:PATH=%{_kf5_sysconfdir} \\\
+    -DLIBEXEC_INSTALL_DIR:PATH=%{_kf5_libexecdir} \\\
+    -DKF5_LIBEXEC_INSTALL_DIR=%{_kf5_libexecdir} \\\
+    -DKF5_INCLUDE_INSTALL_DIR=%{_kf5_includedir}
+
+%kf5_make \
+  mkdir -p %{_target_platform} \
+  pushd %{_target_platform} \
+  %cmake_kf5 .. \
+  popd \
+  make %{?_smp_mflags} -C %{_target_platform}
+
+%kf5_make_install \
+  make install DESTDIR=%{buildroot} -C %{_target_platform}

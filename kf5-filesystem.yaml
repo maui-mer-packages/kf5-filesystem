@@ -1,0 +1,31 @@
+Name        : kf5-filesystem
+Version     : 4.99.0
+Release     : 1
+Group       : System/Base
+License     : BSD
+Summary     : Filesystem and RPM macros for KDE Frameworks 5
+Description : Filesystem and RPM macros for KDE Frameworks 5.
+URL         : http://www.kde.org
+Sources     :
+    - macros.kf5
+NoSetup     : yes
+BuildArch   : noarch
+
+Configure   : none
+Builder     : none
+
+Files:
+    - "%{_libdir}/qt5/plugins/kf5"
+    - "%{_includedir}/KF5"
+    - "%{_libexecdir}/kf5"
+
+SubPackages:
+    - Name: kf5-rpm-macros
+      AsWholeName: yes
+      Group: Development/System
+      Summary: RPM macros for KDE Frameworks 5
+      Description: RPM macros for building KDE Frameworks 5 packages.
+      Requires:
+          - qt5-qmake
+      Files:
+          - "%config(noreplace) %{_sysconfdir}/rpm/macros.kf5"
