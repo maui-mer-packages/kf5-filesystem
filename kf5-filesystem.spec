@@ -9,7 +9,7 @@ Name:       kf5-filesystem
 # << macros
 
 Summary:    Filesystem and RPM macros for KDE Frameworks 5
-Version:    4.100.0
+Version:    5.0.0
 Release:    1
 Group:      System/Base
 License:    BSD
