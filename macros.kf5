@@ -1,17 +1,17 @@
-%_kf5_prefix %_prefix
-%_kf5_archdatadir %_libdir/qt5
-%_kf5_bindir %_kf5_prefix/bin
+%_kf5_prefix %_qt5_prefix
+%_kf5_archdatadir %_prefix/%_lib/qt5
+%_kf5_bindir %_qt5_bindir
 %_kf5_datadir %_datadir
-%_kf5_docdir /usr/share/doc
-%_kf5_includedir %_includedir/KF5
-%_kf5_libdir %_libdir
+%_kf5_docdir %_docdir
+%_kf5_includedir %_prefix/include/KF5
+%_kf5_libdir %_prefix/%_lib
 %_kf5_libexecdir %_libexecdir/kf5
 %_kf5_qtplugindir %_qt5_plugindir
+%_kf5_mkspecsdir %_qt5_datadir/mkspecs/modules
+%_kf5_qmldir %_kf5_archdatadir/qml
 %_kf5_plugindir %_qt5_plugindir/kf5
 %_kf5_sysconfdir %_sysconfdir
-%_kf5_mandir %_kf5_datadir/man
-%_kf5_buildtype release
-%_kf5_qmldir %_kf5_archdatadir/qml
+%_kf5_mandir %_mandir
 
 %cmake_kf5 \
   QTDIR="%{_qt5_prefix}" ; export QTDIR ; \
@@ -37,7 +37,7 @@
     -DQT_PLUGIN_INSTALL_DIR:PATH=%{_qt5_plugindir} \\\
     -DQML_INSTALL_DIR:PATH=%{_kf5_qmldir} \\\
     -DIMPORTS_INSTALL_DIR:PATH=%{_qt5_importdir} \\\
-    -DECM_MKSPECS_INSTALL_DIR:PATH=%{_kf5_datadir}/qt5/mkspecs/modules \\\
+    -DECM_MKSPECS_INSTALL_DIR:PATH=%{_kf5_mkspecsdir} \\\
     -DSYSCONF_INSTALL_DIR:PATH=%{_kf5_sysconfdir} \\\
     -DLIBEXEC_INSTALL_DIR:PATH=%{_libexecdir} \\\
     -DKF5_LIBEXEC_INSTALL_DIR=%{_kf5_libexecdir} \\\
