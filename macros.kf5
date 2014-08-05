@@ -1,6 +1,6 @@
 %_kf5_prefix %_qt5_prefix
 %_kf5_archdatadir %_prefix/%_lib/qt5
-%_kf5_bindir %_qt5_bindir
+%_kf5_bindir %_kf5_prefix/bin
 %_kf5_datadir %_datadir
 %_kf5_docdir %_docdir
 %_kf5_includedir %_prefix/include/KF5
