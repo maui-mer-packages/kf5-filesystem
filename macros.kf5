@@ -26,7 +26,7 @@
 %_kf5_servicesdir       %{_kf5_sharedir}/kservices5
 %_kf5_servicetypesdir   %{_kf5_sharedir}/kservicetypes5
 %_kf5_htmldir           %{_kf5_sharedir}/doc/HTML
-%_kf5_build_type        None
+%_kf5_build_type        RelWithDebInfo
 
 %cmake_kf5(d:) \
   bdir=. \
