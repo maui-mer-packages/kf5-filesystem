@@ -15,9 +15,9 @@ Configure   : none
 Builder     : none
 
 Files:
-    - "%{_libdir}/qt5/plugins/kf5"
+    - "%{_datadir}/kf5"
     - "%{_includedir}/KF5"
-    - "%{_libexecdir}/kf5"
+    - "%{_prefix}/%{_lib}/libexec/kf5"
 
 SubPackages:
     - Name: kf5-rpm-macros

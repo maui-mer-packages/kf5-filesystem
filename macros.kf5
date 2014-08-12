@@ -1,55 +1,65 @@
-%_kf5_prefix %_qt5_prefix
-%_kf5_archdatadir %_kf5_prefix/%_lib/qt5
-%_kf5_bindir %_kf5_prefix/bin
-%_kf5_datadir %_datadir
-%_kf5_docdir %_docdir
-%_kf5_includedir %_kf5_prefix/include/KF5
-%_kf5_libdir %_kf5_prefix/%_lib
-%_kf5_libexecdir %_libexecdir/kf5
-%_kf5_qtplugindir %_qt5_plugindir
-%_kf5_mkspecsdir %_qt5_datadir/mkspecs/modules
-%_kf5_qmldir %_kf5_archdatadir/qml
-%_kf5_plugindir %_qt5_plugindir/kf5
-%_kf5_sysconfdir %_sysconfdir
-%_kf5_mandir %_mandir
-%_kf5_buildtype release
+%_kf5_prefix            %{_prefix}
+%_kf5_bindir            %{_kf5_prefix}/bin
+%_kf5_sharedir          %{_datadir}
+%_kf5_datadir           %{_kf5_sharedir}/kf5
+%_kf5_docdir            %{_docdir}
+%_kf5_includedir        %{_includedir}/KF5
+%_kf5_libdir            %{_kf5_prefix}/%{_lib}
+%_kf5_libexecdir        %{_kf5_libdir}/libexec/kf5
+%_kf5_mandir            %{_kf5_sharedir}/man
+%_kf5_sbindir           %{_sbindir}
+%_kf5_notifydir         %{_kf5_sharedir}/knotifications5
+%_kf5_sysconfdir        %{_sysconfdir}
+%_kf5_plugindir         %{_qt5_plugindir}
+%_kf5_plasmadir         %{_kf5_sharedir}/plasma
+%_kf5_importdir         %{_qt5_importdir}
+%_kf5_qmldir            %{_kf5_prefix}/%{_lib}/qt5/qml
+%_kf5_cmakedir          %{_kf5_libdir}/cmake
+%_kf5_mkspecsdir        %{_qt5_datadir}/mkspecs/modules
+%_kf5_dbusinterfacesdir %{_kf5_sharedir}/dbus-1/interfaces
+%_kf5_configdir         %{_kf5_sysconfdir}/xdg
+%_kf5_applicationsdir   %{_kf5_sharedir}/applications
+%_kf5_iconsdir          %{_kf5_sharedir}/icons
+%_kf5_wallpapersdir     %{_kf5_sharedir}/wallpapers
+%_kf5_appsdir           %{_kf5_sharedir}
+%_kf5_configkcfgdir     %{_kf5_sharedir}/config.kcfg
+%_kf5_servicesdir       %{_kf5_sharedir}/kservices5
+%_kf5_servicetypesdir   %{_kf5_sharedir}/kservicetypes5
+%_kf5_htmldir           %{_kf5_sharedir}/doc/HTML
+%_kf5_build_type        None
 
-%cmake_kf5 \
-  QTDIR="%{_qt5_prefix}" ; export QTDIR ; \
-  PATH="%{_kf5_bindir}:$PATH" ; export PATH ; \
-  CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
-  CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
-  FFLAGS="${FFLAGS:-%optflags%{?_fmoddir: -I%_fmoddir}}" ; export FFLAGS ; \
-  %{?__global_ldflags:LDFLAGS="${LDFLAGS:-%__global_ldflags}" ; export LDFLAGS ;} \
-  %{__cmake} \\\
-    -DBUILD_SHARED_LIBS:BOOL=ON \\\
-    -DBUILD_TESTING:BOOL=FALSE \\\
-    -DCMAKE_BUILD_TYPE=%{_kf5_buildtype} \\\
-    -DCMAKE_INSTALL_PREFIX:PATH=%{_kf5_prefix} \\\
-    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \\\
-    -DBIN_INSTALL_DIR:PATH=%{_kf5_bindir} \\\
-    -DINCLUDE_INSTALL_DIR:PATH=%{_includedir} \\\
-    -DLIB_INSTALL_DIR:PATH=%{_lib} \\\
-%if "%{?_lib}" == "lib64" \
-     %{?_cmake_lib_suffix64} \\\
-%endif \
-    -DKCFG_INSTALL_DIR:PATH=%{_datadir}/config.kcfg \\\
-    -DPLUGIN_INSTALL_DIR:PATH=%{_qt5_plugindir} \\\
-    -DQT_PLUGIN_INSTALL_DIR:PATH=%{_qt5_plugindir} \\\
-    -DQML_INSTALL_DIR:PATH=%{_kf5_qmldir} \\\
-    -DIMPORTS_INSTALL_DIR:PATH=%{_qt5_importdir} \\\
-    -DECM_MKSPECS_INSTALL_DIR:PATH=%{_kf5_mkspecsdir} \\\
-    -DSYSCONF_INSTALL_DIR:PATH=%{_kf5_sysconfdir} \\\
-    -DLIBEXEC_INSTALL_DIR:PATH=%{_libexecdir} \\\
-    -DKF5_LIBEXEC_INSTALL_DIR=%{_kf5_libexecdir} \\\
-    -DKF5_INCLUDE_INSTALL_DIR=%{_kf5_includedir}
+%cmake_kf5(d:) \
+  bdir=. \
+  %{-d:dir=%{-d*} \
+  mkdir $dir \
+  cd $dir \
+  bdir=.. } \
+  cmake -DCMAKE_BUILD_TYPE=%{_kf5_build_type} \\\
+      -DCMAKE_C_FLAGS="%{optflags} -DNDEBUG" \\\
+      -DCMAKE_CXX_FLAGS="%{optflags} -DNDEBUG" \\\
+      -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--no-undefined -Wl,-Bsymbolic-functions" \\\
+      -DCMAKE_MODULE_LINKER_FLAGS="-Wl,--as-needed -Wl,--no-undefined -Wl,-Bsymbolic-functions" \\\
+      -DCMAKE_SHARED_LINKER_FLAGS="-Wl,--as-needed -Wl,--no-undefined -Wl,-Bsymbolic-functions" \\\
+      -DCMAKE_INSTALL_PREFIX=%{_kf5_prefix} \\\
+      -DCMAKE_PREFIX_PATH=%{_kf5_prefix} \\\
+      -DKF5_INCLUDE_INSTALL_DIR=include/KF5 \\\
+      -DLIB_INSTALL_DIR=%{_lib} \\\
+      -DSYSCONF_INSTALL_DIR=%{_kf5_sysconfdir} \\\
+      -DQT_PLUGIN_INSTALL_DIR=%{_lib}/qt5/plugins \\\
+      -DPLUGIN_INSTALL_DIR=%{_lib}/qt5/plugins \\\
+      -DQML_INSTALL_DIR=%{_lib}/qt5/qml \\\
+      -DIMPORTS_INSTALL_DIR=%{_lib}/qt5/imports \\\
+      -DECM_MKSPECS_INSTALL_DIR=%{_kf5_mkspecsdir} \\\
+      -DBUILD_TESTING=OFF \\\
+      $bdir %* \
+%{nil}
+
+%cmake_kf5_install \
+  make VERBOSE=1 DESTDIR=%{?buildroot:%{buildroot}} install
 
 %kf5_make \
-  mkdir -p %{_target_platform} \
-  pushd %{_target_platform} \
-  %cmake_kf5 .. \
-  popd \
-  make %{?_smp_mflags} -C %{_target_platform}
+  %cmake_kf5 -d build \
+  %{__make} %{?_smp_mflags}
 
 %kf5_make_install \
-  make install DESTDIR=%{buildroot} -C %{_target_platform}
+  %cmake_kf5_install -C build

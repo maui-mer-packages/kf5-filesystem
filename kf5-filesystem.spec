@@ -52,9 +52,9 @@ rm -rf %{buildroot}
 
 # >> install post
 # See macros.kf5 where the directories are specified
-mkdir -p %{buildroot}%{_libdir}/qt5/plugins/kf5
+mkdir -p %{buildroot}%{_datadir}/kf5
 mkdir -p %{buildroot}%{_includedir}/KF5
-mkdir -p %{buildroot}%{_libexecdir}/kf5
+mkdir -p %{buildroot}%{_prefix}/%{_lib}/libexec/kf5
 
 mkdir -p %{buildroot}%{_sysconfdir}/rpm/
 install -pm644 %{_sourcedir}/macros.kf5 %{buildroot}%{_sysconfdir}/rpm/
@@ -62,9 +62,9 @@ install -pm644 %{_sourcedir}/macros.kf5 %{buildroot}%{_sysconfdir}/rpm/
 
 %files
 %defattr(-,root,root,-)
-%{_libdir}/qt5/plugins/kf5
+%{_datadir}/kf5
 %{_includedir}/KF5
-%{_libexecdir}/kf5
+%{_prefix}/%{_lib}/libexec/kf5
 # >> files
 # << files
 
