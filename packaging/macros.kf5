@@ -34,12 +34,16 @@
   mkdir $dir \
   cd $dir \
   bdir=.. } \
+  linkerflags= \
+  %ifarch %{ix86} x86_64 \
+    linkerflags="-Wl,-Bsymbolic-functions" \
+  %endif \
   cmake -DCMAKE_BUILD_TYPE=%{_kf5_build_type} \\\
       -DCMAKE_C_FLAGS="%{optflags} -DNDEBUG" \\\
       -DCMAKE_CXX_FLAGS="%{optflags} -DNDEBUG" \\\
-      -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--no-undefined -Wl,-Bsymbolic-functions" \\\
-      -DCMAKE_MODULE_LINKER_FLAGS="-Wl,--as-needed -Wl,--no-undefined -Wl,-Bsymbolic-functions" \\\
-      -DCMAKE_SHARED_LINKER_FLAGS="-Wl,--as-needed -Wl,--no-undefined -Wl,-Bsymbolic-functions" \\\
+      -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--no-undefined $linkerflags" \\\
+      -DCMAKE_MODULE_LINKER_FLAGS="-Wl,--as-needed -Wl,--no-undefined $linkerflags" \\\
+      -DCMAKE_SHARED_LINKER_FLAGS="-Wl,--as-needed -Wl,--no-undefined $linkerflags" \\\
       -DCMAKE_INSTALL_PREFIX=%{_kf5_prefix} \\\
       -DCMAKE_PREFIX_PATH=%{_kf5_prefix} \\\
       -DKF5_INCLUDE_INSTALL_DIR=include/KF5 \\\
